@@ -1,8 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { EOL } from "node:os";
-import { default as rules } from "../lib/rules.js";
-import { newLineRe } from "../helpers/helpers.js";
-import { deprecatedRuleNames, fixableRuleNames } from "../lib/constants.js";
+import { default as rules } from "../lib/rules.mjs";
+import { newLineRe } from "../helpers/helpers.cjs";
+import { deprecatedRuleNames, fixableRuleNames } from "../lib/constants.mjs";
 
 const maxLineLength = 80;
 
@@ -68,9 +68,10 @@ for (const rule of rules) {
     );
     for (const property of Object.keys(ruleData.properties).sort()) {
       const propData = ruleData.properties[property];
-      const propType = (propData.type === "array") ?
-        `${propData.items.type}[]` :
-        propData.type;
+      const propType = [ propData.type ]
+        .flat()
+        .map((type) => ((type === "array") ? `${propData.items.type}[]` : type))
+        .join("|");
       const defaultValue = Array.isArray(propData.default) ?
         JSON.stringify(propData.default) :
         propData.default;

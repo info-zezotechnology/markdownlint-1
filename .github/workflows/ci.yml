@@ -11,29 +11,39 @@ on:
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        node-version: [ 14, 16, 18, 20 ]
+        node-version: [ 18, 20, 22, 23 ]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Edit .npmrc to avoid setup-node issue with Node 14
-      if: ${{ matrix.node-version == '14' }}
-      run: perl -i -p -e 's/(ignore-scripts=true)/# $1/' .npmrc && git add .npmrc
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install Dependencies
       run: npm install --no-package-lock
     - name: Run CI Tests
       run: npm run ci
-    - name: Install markdownlint-micromark Dependencies
-      run: cd micromark && npm install --no-package-lock
-    - name: Build markdownlint-micromark
-      run: npm run build-micromark
+
+  pnpm:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use pnpm latest
+      uses: pnpm/action-setup@v4
+      with:
+        version: latest
+    - name: Use Node.js latest
+      uses: actions/setup-node@v4
+      with:
+        node-version: latest
+    - name: Install dependencies
+      run: pnpm install
+    - name: Run CI Tests
+      run: npm test

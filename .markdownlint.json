@@ -8,6 +8,9 @@
   "emphasis-style": {
     "style": "asterisk"
   },
+  "extended-ascii": {
+    "ascii-only": true
+  },
   "fenced-code-language": {
     "allowed_languages": [
       "bash",
@@ -29,6 +32,11 @@
     "strict": true,
     "code_blocks": false
   },
+  "link-image-style": {
+    "collapsed": false,
+    "shortcut": false,
+    "url_inline": false
+  },
   "no-duplicate-heading": {
     "siblings_only": true
   },
@@ -46,6 +54,9 @@
       "markdownlint",
       "Node.js"
     ]
+  },
+  "reference-links-images": {
+    "shortcut_syntax": true
   },
   "strong-style": {
     "style": "asterisk"

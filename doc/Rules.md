@@ -2,16 +2,15 @@
 
 This document contains a description of all rules, what they are checking for,
 as well as examples of documents that break the rule and corrected
-versions of the examples. Any rule whose heading is ~~struck through~~ is
-deprecated, but still provided for backward-compatibility.
+versions of the examples.
 
 <a name="md001"></a>
 
 ## `MD001` - Heading levels should only increment by one level at a time
 
-Tags: `headers`, `headings`
+Tags: `headings`
 
-Aliases: `header-increment`, `heading-increment`
+Aliases: `heading-increment`
 
 This rule is triggered when you skip heading levels in a Markdown document, for
 example:
@@ -45,53 +44,13 @@ Rationale: Headings represent the structure of a document and can be confusing
 when skipped - especially for accessibility scenarios. More information:
 <https://www.w3.org/WAI/tutorials/page-structure/headings/>.
 
-<a name="md002"></a>
-
-## ~~`MD002` - First heading should be a top-level heading~~
-
-> This rule is deprecated and provided for backward-compatibility
-
-Tags: `headers`, `headings`
-
-Aliases: `first-header-h1`, `first-heading-h1`
-
-Parameters:
-
-- `level`: Heading level (`integer`, default `1`)
-
-> Note: *MD002 has been deprecated and is disabled by default.*
-> [MD041/first-line-heading](md041.md) offers an improved implementation.
-
-This rule is intended to ensure document headings start at the top level and
-is triggered when the first heading in the document isn't an h1 heading:
-
-```markdown
-## This isn't an H1 heading
-
-### Another heading
-```
-
-The first heading in the document should be an h1 heading:
-
-```markdown
-# Start with an H1 heading
-
-## Then use an H2 for subsections
-```
-
-Note: The `level` parameter can be used to change the top-level (ex: to h2) in
-cases where an h1 is added externally.
-
-Rationale: The top-level heading often acts as the title of a document. More
-information: <https://cirosantilli.com/markdown-style-guide#top-level-header>.
-
 <a name="md003"></a>
 
 ## `MD003` - Heading style
 
-Tags: `headers`, `headings`
+Tags: `headings`
 
-Aliases: `header-style`, `heading-style`
+Aliases: `heading-style`
 
 Parameters:
 
@@ -134,8 +93,8 @@ Setext style H2
 ```
 
 Note: The configured heading style can be a specific style to require (`atx`,
-`atx_closed`, `setext`, `setext_with_atx`, `setext_with_atx_closed`), or may
-just require that usage is consistent within the document via `consistent`.
+`atx_closed`, `setext`, `setext_with_atx`, `setext_with_atx_closed`), or can
+require that all heading styles match the first heading style via `consistent`.
 
 Note: The placement of a horizontal rule directly below a line of text can
 trigger this rule by turning that text into a level 2 setext-style heading:
@@ -180,9 +139,10 @@ document:
 * Item 3
 ```
 
-The configured list style can be a specific symbol to use (asterisk, plus,
-dash), to ensure that all list styling is consistent, or to ensure that each
-sublist has a consistent symbol that differs from its parent list.
+The configured list style can ensure all list styling is a specific symbol
+(`asterisk`, `plus`, `dash`), ensure each sublist has a consistent symbol that
+differs from its parent list (`sublist`), or ensure all list styles match the
+first list style (`consistent`).
 
 For example, the following is valid for the `sublist` style because the
 outer-most indent uses asterisk, the middle indent uses plus, and the inner-most
@@ -255,55 +215,6 @@ the same ending column:
 
 Rationale: Violations of this rule can lead to improperly rendered content.
 
-<a name="md006"></a>
-
-## ~~`MD006` - Consider starting bulleted lists at the beginning of the line~~
-
-> This rule is deprecated and provided for backward-compatibility
-
-Tags: `bullet`, `indentation`, `ul`
-
-Aliases: `ul-start-left`
-
-Fixable: Some violations can be fixed by tooling
-
-This rule is triggered when top-level lists don't start at the beginning of a
-line:
-
-```markdown
-Some text
-
-  * List item
-  * List item
-```
-
-To fix, ensure that top-level list items are not indented:
-
-```markdown
-Some test
-
-* List item
-* List item
-```
-
-Note: This rule is triggered for the following scenario because the unordered
-sublist is not recognized as such by the parser. Not being nested 3 characters
-as required by the outer ordered list, it creates a top-level unordered list
-instead.
-
-```markdown
-1. List item
-  - List item
-  - List item
-1. List item
-```
-
-Rationale: Starting lists at the beginning of the line means that nested list
-items can all be indented by the same amount when an editor's indent function
-or the tab key is used to indent. Starting a list 1 space in means that the
-indent of the first nested list is less than the indent of the second level (3
-characters if you use 4 space tabs, or 1 character if you use 2 space tabs).
-
 <a name="md007"></a>
 
 ## `MD007` - Unordered list indentation
@@ -344,23 +255,20 @@ unordered (otherwise, extra indentation of ordered lists interferes with the
 rule).
 
 The `start_indented` parameter allows the first level of lists to be indented by
-the configured number of spaces rather than starting at zero (the inverse of
-MD006). The `start_indent` parameter allows the first level of lists to be
-indented by a different number of spaces than the rest (ignored when
-`start_indented` is not set).
+the configured number of spaces rather than starting at zero. The `start_indent`
+parameter allows the first level of lists to be indented by a different number
+of spaces than the rest (ignored when `start_indented` is not set).
 
 Rationale: Indenting by 2 spaces allows the content of a nested list to be in
 line with the start of the content of the parent list when a single space is
 used after the list marker. Indenting by 4 spaces is consistent with code blocks
 and simpler for editors to implement. Additionally, this can be a compatibility
 issue for other Markdown parsers, which require 4-space indents. More
-information: [Markdown Style Guide][markdown-style-guide] and [Marked app\
-support][marked-app-support].
+information: [Markdown Style Guide][markdown-style-guide].
 
 Note: See [Prettier.md](Prettier.md) for compatibility information.
 
 [markdown-style-guide]: https://cirosantilli.com/markdown-style-guide#indentation-of-content-inside-lists
-[marked-app-support]: http://support.markedapp.com/discussions/problems/21-sub-lists-not-indenting
 
 <a name="md009"></a>
 
@@ -562,7 +470,6 @@ Parameters:
 - `code_block_line_length`: Number of characters for code blocks (`integer`,
   default `80`)
 - `code_blocks`: Include code blocks (`boolean`, default `true`)
-- `headers`: Include headings (`boolean`, default `true`)
 - `heading_line_length`: Number of characters for headings (`integer`, default
   `80`)
 - `headings`: Include headings (`boolean`, default `true`)
@@ -570,8 +477,6 @@ Parameters:
 - `stern`: Stern length checking (`boolean`, default `false`)
 - `strict`: Strict length checking (`boolean`, default `false`)
 - `tables`: Include tables (`boolean`, default `true`)
-
-> If `headings` is not provided, `headers` (deprecated) will be used.
 
 This rule is triggered when there are lines that are longer than the
 configured `line_length` (default: 80 characters). To fix this, split the line
@@ -591,12 +496,12 @@ For example (assuming normal behavior):
 ```markdown
 IF THIS LINE IS THE MAXIMUM LENGTH
 This line is okay because there are-no-spaces-beyond-that-length
-And this line is a violation because there are
-This-line-is-also-okay-because-there-are-no-spaces
+This line is a violation because there are spaces beyond that length
+This-line-is-okay-because-there-are-no-spaces-anywhere-within
 ```
 
-In `strict` or `stern` modes, the two middle lines above are a violation. The
-third line is a violation in `strict` mode but allowed in `stern` mode.
+In `strict` mode, the last three lines above are all violations. In `stern`
+mode, the middle two lines above are both violations, but the last is okay.
 
 You have the option to exclude this rule for code blocks, tables, or headings.
 To do so, set the `code_blocks`, `tables`, or `headings` parameter(s) to false.
@@ -605,9 +510,10 @@ Code blocks are included in this rule by default since it is often a
 requirement for document readability, and tentatively compatible with code
 rules. Still, some languages do not lend themselves to short lines.
 
-Lines with link/image reference definitions are always exempted from this rule
-(even in `strict` mode) because there is generally no way to split such lines
-without breaking the URL.
+Lines with link/image reference definitions and standalone lines (i.e., not part
+of a paragraph) with only a link/image (possibly using (strong) emphasis) are
+always exempted from this rule (even in `strict` mode) because there is often no
+way to split such lines without breaking the URL.
 
 Rationale: Extremely long lines can be difficult to work with in some editors.
 More information: <https://cirosantilli.com/markdown-style-guide#line-wrapping>.
@@ -673,7 +579,7 @@ for more information.
 
 ## `MD018` - No space after hash on atx style heading
 
-Tags: `atx`, `headers`, `headings`, `spaces`
+Tags: `atx`, `headings`, `spaces`
 
 Aliases: `no-missing-space-atx`
 
@@ -703,7 +609,7 @@ Rationale: Violations of this rule can lead to improperly rendered content.
 
 ## `MD019` - Multiple spaces after hash on atx style heading
 
-Tags: `atx`, `headers`, `headings`, `spaces`
+Tags: `atx`, `headings`, `spaces`
 
 Aliases: `no-multiple-space-atx`
 
@@ -734,7 +640,7 @@ content.
 
 ## `MD020` - No space inside hashes on closed atx style heading
 
-Tags: `atx_closed`, `headers`, `headings`, `spaces`
+Tags: `atx_closed`, `headings`, `spaces`
 
 Aliases: `no-missing-space-closed-atx`
 
@@ -766,7 +672,7 @@ Rationale: Violations of this rule can lead to improperly rendered content.
 
 ## `MD021` - Multiple spaces inside hashes on closed atx style heading
 
-Tags: `atx_closed`, `headers`, `headings`, `spaces`
+Tags: `atx_closed`, `headings`, `spaces`
 
 Aliases: `no-multiple-space-closed-atx`
 
@@ -800,14 +706,14 @@ content.
 
 ## `MD022` - Headings should be surrounded by blank lines
 
-Tags: `blank_lines`, `headers`, `headings`
+Tags: `blank_lines`, `headings`
 
-Aliases: `blanks-around-headers`, `blanks-around-headings`
+Aliases: `blanks-around-headings`
 
 Parameters:
 
-- `lines_above`: Blank lines above heading (`integer`, default `1`)
-- `lines_below`: Blank lines below heading (`integer`, default `1`)
+- `lines_above`: Blank lines above heading (`integer|integer[]`, default `1`)
+- `lines_below`: Blank lines below heading (`integer|integer[]`, default `1`)
 
 Fixable: Some violations can be fixed by tooling
 
@@ -836,10 +742,16 @@ Some more text
 ```
 
 The `lines_above` and `lines_below` parameters can be used to specify a
-different number of blank lines (including 0) above or below each heading.
+different number of blank lines (including `0`) above or below each heading.
+If the value `-1` is used for either parameter, any number of blank lines is
+allowed. To customize the number of lines above or below each heading level
+individually, specify a `number[]` where values correspond to heading levels
+1-6 (in order).
 
-Note: If `lines_above` or `lines_below` are configured to require more than one
-blank line, [MD012/no-multiple-blanks](md012.md) should also be customized.
+Notes: If `lines_above` or `lines_below` are configured to require more than one
+blank line, [MD012/no-multiple-blanks](md012.md) should also be customized. This
+rule checks for *at least* as many blank lines as specified; any extra blank
+lines are ignored.
 
 Rationale: Aside from aesthetic reasons, some parsers, including `kramdown`,
 will not parse headings that don't have a blank line before, and will parse them
@@ -849,9 +761,9 @@ as regular text.
 
 ## `MD023` - Headings must start at the beginning of the line
 
-Tags: `headers`, `headings`, `spaces`
+Tags: `headings`, `spaces`
 
-Aliases: `header-start-left`, `heading-start-left`
+Aliases: `heading-start-left`
 
 Fixable: Some violations can be fixed by tooling
 
@@ -871,6 +783,13 @@ Some text
 # Heading
 ```
 
+Note that scenarios like block quotes "indent" the start of the line, so the
+following is also correct:
+
+```markdown
+> # Heading in Block Quote
+```
+
 Rationale: Headings that don't start at the beginning of the line will not be
 parsed as headings, and will instead appear as regular text.
 
@@ -878,14 +797,12 @@ parsed as headings, and will instead appear as regular text.
 
 ## `MD024` - Multiple headings with the same content
 
-Tags: `headers`, `headings`
+Tags: `headings`
 
-Aliases: `no-duplicate-header`, `no-duplicate-heading`
+Aliases: `no-duplicate-heading`
 
 Parameters:
 
-- `allow_different_nesting`: Only check sibling headings (`boolean`, default
-  `false`)
 - `siblings_only`: Only check sibling headings (`boolean`, default `false`)
 
 This rule is triggered if there are multiple headings in the document that have
@@ -905,9 +822,8 @@ To fix this, ensure that the content of each heading is different:
 ## Some more text
 ```
 
-If the parameter `siblings_only` (alternatively `allow_different_nesting`) is
-set to `true`, heading duplication is allowed for non-sibling headings (common
-in changelogs):
+If the parameter `siblings_only` is set to `true`, duplication is allowed for
+headings with different parents (as is common in changelogs):
 
 ```markdown
 # Change log
@@ -928,7 +844,7 @@ heading name; headings with the same content can cause problems with that.
 
 ## `MD025` - Multiple top-level headings in the same document
 
-Tags: `headers`, `headings`
+Tags: `headings`
 
 Aliases: `single-h1`, `single-title`
 
@@ -980,14 +896,13 @@ be contained within this heading.
 
 ## `MD026` - Trailing punctuation in heading
 
-Tags: `headers`, `headings`
+Tags: `headings`
 
 Aliases: `no-trailing-punctuation`
 
 Parameters:
 
-- `punctuation`: Punctuation characters not allowed at end of headings
-  (`string`, default `.,;:!。，；：！`)
+- `punctuation`: Punctuation characters (`string`, default `.,;:!。，；：！`)
 
 Fixable: Some violations can be fixed by tooling
 
@@ -1344,31 +1259,48 @@ followed by a blank line:
 
 ```markdown
 Some text
-* Some
-* List
+* List item
+* List item
 
-1. Some
-2. List
-Some text
+1. List item
+2. List item
+***
 ```
 
-To fix this, ensure that all lists have a blank line both before and after
-(except where the block is at the beginning or end of the document):
+In the first case above, text immediately precedes the unordered list. In the
+second case above, a thematic break immediately follows the ordered list. To fix
+violations of this rule, ensure that all lists have a blank line both before and
+after (except when the list is at the very beginning or end of the document):
 
 ```markdown
 Some text
 
-* Some
-* List
+* List item
+* List item
 
-1. Some
-2. List
+1. List item
+2. List item
 
-Some text
+***
 ```
 
-Rationale: Aside from aesthetic reasons, some parsers, including kramdown, will
-not parse lists that don't have blank lines before and after them.
+Note that the following case is **not** a violation of this rule:
+
+```markdown
+1. List item
+   More item 1
+2. List item
+More item 2
+```
+
+Although it is not indented, the text "More item 2" is referred to as a
+[lazy continuation line][lazy-continuation] and considered part of the second
+list item.
+
+Rationale: In addition to aesthetic reasons, some parsers, including kramdown,
+will not parse lists that don't have blank lines before and after them.
+
+[lazy-continuation]: https://spec.commonmark.org/0.30/#lazy-continuation-line
 
 <a name="md033"></a>
 
@@ -1422,6 +1354,11 @@ To fix this, add angle brackets around the URL or email address:
 ```markdown
 For more info, visit <https://www.example.com/> or email <user@example.com>.
 ```
+
+If a URL or email address contains non-ASCII characters, it may be not be
+handled as intended even when angle brackets are present. In such cases,
+[percent-encoding](https://en.m.wikipedia.org/wiki/Percent-encoding) can be used
+to comply with the required syntax for URL and email.
 
 Note: To include a bare URL or email without it being converted into a link,
 wrap it in a code span:
@@ -1480,8 +1417,7 @@ in the document:
 ****
 ```
 
-To fix this, ensure any horizontal rules used in the document are consistent,
-or match the given style if the rule is so configured:
+To fix this, use the same horizontal rule everywhere:
 
 ```markdown
 ---
@@ -1489,12 +1425,8 @@ or match the given style if the rule is so configured:
 ---
 ```
 
-Note: by default, this rule is configured to just require that all horizontal
-rules in the document are the same and will trigger if any of the horizontal
-rules are different than the first one encountered in the document. If you
-want to configure the rule to match a specific style, the parameter given to
-the 'style' option is a string containing the exact horizontal rule text that
-is allowed.
+The configured style can ensure all horizontal rules use a specific string or it
+can ensure all horizontal rules match the first horizontal rule (`consistent`).
 
 Rationale: Consistent formatting makes it easier to understand a document.
 
@@ -1502,9 +1434,9 @@ Rationale: Consistent formatting makes it easier to understand a document.
 
 ## `MD036` - Emphasis used instead of a heading
 
-Tags: `emphasis`, `headers`, `headings`
+Tags: `emphasis`, `headings`
 
-Aliases: `no-emphasis-as-header`, `no-emphasis-as-heading`
+Aliases: `no-emphasis-as-heading`
 
 Parameters:
 
@@ -1712,7 +1644,7 @@ correct syntax highlighting for code. More information:
 
 ## `MD041` - First line in a file should be a top-level heading
 
-Tags: `headers`, `headings`
+Tags: `headings`
 
 Aliases: `first-line-h1`, `first-line-heading`
 
@@ -1799,17 +1731,14 @@ links.
 
 ## `MD043` - Required heading structure
 
-Tags: `headers`, `headings`
+Tags: `headings`
 
-Aliases: `required-headers`, `required-headings`
+Aliases: `required-headings`
 
 Parameters:
 
-- `headers`: List of headings (`string[]`, default `[]`)
 - `headings`: List of headings (`string[]`, default `[]`)
 - `match_case`: Match case of headings (`boolean`, default `false`)
-
-> If `headings` is not provided, `headers` (deprecated) will be used.
 
 This rule is triggered when the headings in a file do not match the array of
 headings passed to the rule. It can be used to enforce a standard heading
@@ -1901,6 +1830,16 @@ enforce the proper capitalization, specify the desired letter case in the
 ]
 ```
 
+Sometimes a proper name is capitalized differently in certain contexts. In such
+cases, add both forms to the `names` array:
+
+```json
+[
+    "GitHub",
+    "github.com"
+]
+```
+
 Set the `code_blocks` parameter to `false` to disable this rule for code blocks
 and spans. Set the `html_elements` parameter to `false` to disable this rule
 for HTML elements and attributes (such as when using a proper name as part of
@@ -1933,6 +1872,12 @@ Or with reference syntax as:
 ...
 
 [ref]: image.jpg "Optional title"
+```
+
+Or with HTML as:
+
+```html
+<img src="image.jpg" alt="Alternate text" />
 ```
 
 Guidance for writing alternate text is available from the [W3C][w3c],
@@ -1983,8 +1928,8 @@ document:
 To fix violations of this rule, use a consistent style (either indenting or code
 fences).
 
-The specified style can be specific (`fenced`, `indented`) or simply require
-that usage be consistent within the document (`consistent`).
+The configured code block style can be specific (`fenced`, `indented`) or can
+require all code blocks match the first code block (`consistent`).
 
 Rationale: Consistent formatting makes it easier to understand a document.
 
@@ -2064,14 +2009,15 @@ document:
 ```
 ````
 
-The configured list style can be a specific symbol to use (backtick, tilde), or
-can require that usage be consistent within the document.
+The configured code fence style can be a specific symbol to use (`backtick`,
+`tilde`) or it can require all code fences match the first code fence
+(`consistent`).
 
 Rationale: Consistent formatting makes it easier to understand a document.
 
 <a name="md049"></a>
 
-## `MD049` - Emphasis style should be consistent
+## `MD049` - Emphasis style
 
 Tags: `emphasis`
 
@@ -2079,8 +2025,8 @@ Aliases: `emphasis-style`
 
 Parameters:
 
-- `style`: Emphasis style should be consistent (`string`, default `consistent`,
-  values `asterisk` / `consistent` / `underscore`)
+- `style`: Emphasis style (`string`, default `consistent`, values `asterisk` /
+  `consistent` / `underscore`)
 
 Fixable: Some violations can be fixed by tooling
 
@@ -2099,14 +2045,18 @@ To fix this issue, use the configured emphasis style throughout the document:
 *Text*
 ```
 
-The configured emphasis style can be a specific symbol to use ("asterisk",
-"underscore"), or can require that usage be consistent within the document.
+The configured emphasis style can be a specific symbol to use (`asterisk`,
+`underscore`) or can require all emphasis matches the first emphasis
+(`consistent`).
+
+Note: Emphasis within a word is restricted to `asterisk` in order to avoid
+unwanted emphasis for words containing internal underscores like_this_one.
 
 Rationale: Consistent formatting makes it easier to understand a document.
 
 <a name="md050"></a>
 
-## `MD050` - Strong style should be consistent
+## `MD050` - Strong style
 
 Tags: `emphasis`
 
@@ -2114,8 +2064,8 @@ Aliases: `strong-style`
 
 Parameters:
 
-- `style`: Strong style should be consistent (`string`, default `consistent`,
-  values `asterisk` / `consistent` / `underscore`)
+- `style`: Strong style (`string`, default `consistent`, values `asterisk` /
+  `consistent` / `underscore`)
 
 Fixable: Some violations can be fixed by tooling
 
@@ -2134,8 +2084,11 @@ To fix this issue, use the configured strong style throughout the document:
 **Text**
 ```
 
-The configured strong style can be a specific symbol to use ("asterisk",
-"underscore"), or can require that usage be consistent within the document.
+The configured strong style can be a specific symbol to use (`asterisk`,
+`underscore`) or can require all strong matches the first strong (`consistent`).
+
+Note: Emphasis within a word is restricted to `asterisk` in order to avoid
+unwanted emphasis for words containing internal underscores like__this__one.
 
 Rationale: Consistent formatting makes it easier to understand a document.
 
@@ -2147,27 +2100,56 @@ Tags: `links`
 
 Aliases: `link-fragments`
 
+Parameters:
+
+- `ignore_case`: Ignore case of fragments (`boolean`, default `false`)
+
 Fixable: Some violations can be fixed by tooling
 
 This rule is triggered when a link fragment does not match any of the fragments
 that are automatically generated for headings in a document:
 
 ```markdown
-# Title
+# Heading Name
 
 [Link](#fragment)
 ```
 
-To fix this issue, change the link fragment to reference an existing heading:
+To fix this issue, change the link fragment to reference an existing heading's
+generated name (see below):
 
 ```markdown
-# Title
+# Heading Name
 
-[Link](#title)
+[Link](#heading-name)
 ```
 
-Alternatively, an HTML `a` tag with an `id` or a `name` attribute can be used to
-define a fragment:
+For consistency, this rule requires fragments to exactly match the [GitHub
+heading algorithm][github-heading-algorithm] which converts letters to
+lowercase. Therefore, the following example is reported as a violation:
+
+```markdown
+# Heading Name
+
+[Link](#Heading-Name)
+```
+
+To ignore case when comparing fragments with heading names, the `ignore_case`
+parameter can be set to `true`. In this configuration, the previous example is
+not reported as a violation.
+
+Alternatively, some platforms allow the syntax `{#named-anchor}` to be used
+within a heading to provide a specific name (consisting of only lower-case
+letters, numbers, `-`, and `_`):
+
+```markdown
+# Heading Name {#custom-name}
+
+[Link](#custom-name)
+```
+
+Alternatively, any HTML tag with an `id` attribute or an `a` tag with a `name`
+attribute can be used to define a fragment:
 
 ```markdown
 <a id="bookmark"></a>
@@ -2177,6 +2159,21 @@ define a fragment:
 
 An `a` tag can be useful in scenarios where a heading is not appropriate or for
 control over the text of the fragment identifier.
+
+This rule also recognizes the custom fragment syntax used by GitHub to highlight
+[specific content in a document][github-linking-to-content].
+
+For example, this link to line 20:
+
+```markdown
+[Link](#L20)
+```
+
+And this link to content starting within line 19 running into line 21:
+
+```markdown
+[Link](#L19C5-L21C11)
+```
 
 Rationale: [GitHub section links][github-section-links] are created
 automatically for every heading when Markdown content is displayed on GitHub.
@@ -2191,6 +2188,7 @@ append an incrementing integer as needed for uniqueness.
 
 [github-section-links]: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#section-links
 [github-heading-algorithm]: https://github.com/gjtorikian/html-pipeline/blob/f13a1534cb650ba17af400d1acd3a22c28004c09/lib/html/pipeline/toc_filter.rb
+[github-linking-to-content]: https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-a-permanent-link-to-a-code-snippet#linking-to-markdown#linking-to-markdown
 
 <a name="md052"></a>
 
@@ -2199,6 +2197,10 @@ append an incrementing integer as needed for uniqueness.
 Tags: `images`, `links`
 
 Aliases: `reference-links-images`
+
+Parameters:
+
+- `shortcut_syntax`: Include shortcut syntax (`boolean`, default `false`)
 
 Links and images in Markdown can provide the link destination or image source
 at the time of use or can define it elsewhere and use a label for reference.
@@ -2220,13 +2222,16 @@ Shortcut: ![image]
 [image]: https://example.com/image
 ```
 
-A link or image renders correctly when a corresponding label is defined, but
-the text displays with brackets if the label is not present. This rule warns
-of undefined labels for "full" and "collapsed" reference syntax.
+A link or image renders correctly when the corresponding label is defined, but
+displays as text with brackets when the label is not present. By default, this
+rule warns of undefined labels for "full" and "collapsed" reference syntax but
+not for "shortcut" syntax because it is ambiguous.
 
-> "Shortcut" syntax is ambiguous and a missing label will not generate an
-  error. For example, `[shortcut]` could be a shortcut link or the text
-  "shortcut" in brackets.
+The text `[example]` could be a shortcut link or the text "example" in brackets,
+so "shortcut" syntax is ignored by default. To include "shortcut" syntax, set
+the `include_shortcut` parameter to `true`. Note that doing so produces warnings
+for *all* text in the document that *could* be a shortcut. If bracketed text is
+intentional, brackets can be escaped with the `\` character: `\[example\]`.
 
 <a name="md053"></a>
 
@@ -2243,9 +2248,9 @@ Parameters:
 Fixable: Some violations can be fixed by tooling
 
 Links and images in Markdown can provide the link destination or image source
-at the time of use or can define it elsewhere and use a label for reference.
-The reference format is convenient for keeping paragraph text clutter-free
-and makes it easy to reuse the same URL in multiple places.
+at the time of use or can use a label to reference a definition elsewhere in
+the document. The latter reference format is convenient for keeping paragraph
+text clutter-free and makes it easy to reuse the same URL in multiple places.
 
 Because link and image reference definitions are located separately from
 where they are used, there are two scenarios where a definition can be
@@ -2268,6 +2273,258 @@ Markdown:
 ```markdown
 [//]: # (This behaves like a comment)
 ```
+
+<a name="md054"></a>
+
+## `MD054` - Link and image style
+
+Tags: `images`, `links`
+
+Aliases: `link-image-style`
+
+Parameters:
+
+- `autolink`: Allow autolinks (`boolean`, default `true`)
+- `collapsed`: Allow collapsed reference links and images (`boolean`, default
+  `true`)
+- `full`: Allow full reference links and images (`boolean`, default `true`)
+- `inline`: Allow inline links and images (`boolean`, default `true`)
+- `shortcut`: Allow shortcut reference links and images (`boolean`, default
+  `true`)
+- `url_inline`: Allow URLs as inline links (`boolean`, default `true`)
+
+Fixable: Some violations can be fixed by tooling
+
+Links and images in Markdown can provide the link destination or image source at
+the time of use or can use a label to reference a definition elsewhere in the
+document. The three reference formats are convenient for keeping paragraph text
+clutter-free and make it easy to reuse the same URL in multiple places.
+
+By default, this rule allows all link/image styles.
+
+Setting the `autolink` parameter to `false` disables autolinks:
+
+```markdown
+<https://example.com>
+```
+
+Setting the `inline` parameter to `false` disables inline links and images:
+
+```markdown
+[link](https://example.com)
+
+![image](https://example.com)
+```
+
+Setting the `full` parameter to `false` disables full reference links and
+images:
+
+```markdown
+[link][url]
+
+![image][url]
+
+[url]: https://example.com
+```
+
+Setting the `collapsed` parameter to `false` disables collapsed reference links
+and images:
+
+```markdown
+[url][]
+
+![url][]
+
+[url]: https://example.com
+```
+
+Setting the `shortcut` parameter to `false` disables shortcut reference links
+and images:
+
+```markdown
+[url]
+
+![url]
+
+[url]: https://example.com
+```
+
+To fix violations of this rule, change the link or image to use an allowed
+style. This rule can automatically fix violations when a link or image can be
+converted to the `inline` style (preferred) or a link can be converted to the
+`autolink` style (which does not support images and must be an absolute URL).
+This rule does *not* fix scenarios that require converting a link or image to
+the `full`, `collapsed`, or `shortcut` reference styles because that involves
+naming the reference and determining where to insert it in the document.
+
+Setting the `url_inline` parameter to `false` prevents the use of inline links
+with the same absolute URL text/destination and no title because such links can
+be converted to autolinks:
+
+```markdown
+[https://example.com](https://example.com)
+```
+
+To fix `url_inline` violations, use the simpler autolink syntax instead:
+
+```markdown
+<https://example.com>
+```
+
+Rationale: Consistent formatting makes it easier to understand a document.
+Autolinks are concise, but appear as URLs which can be long and confusing.
+Inline links and images can include descriptive text, but take up more space in
+Markdown form. Reference links and images can be easier to read and manipulate
+in Markdown form, but require a separate link reference definition.
+
+<a name="md055"></a>
+
+## `MD055` - Table pipe style
+
+Tags: `table`
+
+Aliases: `table-pipe-style`
+
+Parameters:
+
+- `style`: Table pipe style (`string`, default `consistent`, values
+  `consistent` / `leading_and_trailing` / `leading_only` /
+  `no_leading_or_trailing` / `trailing_only`)
+
+This rule is triggered when a [GitHub Flavored Markdown table][gfm-table-055]
+is inconsistent about its use of leading and trailing pipe characters (`|`).
+
+By default (`consistent` style), the header row of the first table in a document
+is used to determine the style that is enforced for every table in the document.
+A specific style can be used instead (`leading_and_trailing`, `leading_only`,
+`no_leading_or_trailing`, `trailing_only`).
+
+This table's header row has leading and trailing pipes, but its delimiter row is
+missing the trailing pipe and its first row of cells is missing the leading
+pipe:
+
+```markdown
+| Header | Header |
+| ------ | ------
+  Cell   | Cell   |
+```
+
+To fix these issues, make sure there is a pipe character at the beginning and
+end of every row:
+
+```markdown
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+```
+
+Note that text immediately following a table (i.e., not separated by an empty
+line) is treated as part of the table (per the specification) and may also
+trigger this rule:
+
+```markdown
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+This text is part of the table
+```
+
+Rationale: Some parsers have difficulty with tables that are missing their
+leading or trailing pipe characters. The use of leading/trailing pipes can also
+help provide visual clarity.
+
+[gfm-table-055]: https://github.github.com/gfm/#tables-extension-
+
+<a name="md056"></a>
+
+## `MD056` - Table column count
+
+Tags: `table`
+
+Aliases: `table-column-count`
+
+This rule is triggered when a [GitHub Flavored Markdown table][gfm-table-056]
+does not have the same number of cells in every row.
+
+This table's second data row has too few cells and its third data row has too
+many cells:
+
+```markdown
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+| Cell   |
+| Cell   | Cell   | Cell   |
+```
+
+To fix these issues, ensure every row has the same number of cells:
+
+```markdown
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+| Cell   | Cell   |
+| Cell   | Cell   |
+```
+
+Note that a table's header row and its delimiter row must have the same number
+of cells or it will not be recognized as a table (per specification).
+
+Rationale: Extra cells in a row are usually not shown, so their data is lost.
+Missing cells in a row create holes in the table and suggest an omission.
+
+[gfm-table-056]: https://github.github.com/gfm/#tables-extension-
+
+<a name="md058"></a>
+
+## `MD058` - Tables should be surrounded by blank lines
+
+Tags: `table`
+
+Aliases: `blanks-around-tables`
+
+Fixable: Some violations can be fixed by tooling
+
+This rule is triggered when tables are either not preceded or not followed by a
+blank line:
+
+```markdown
+Some text
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+> Blockquote
+```
+
+To fix violations of this rule, ensure that all tables have a blank line both
+before and after (except when the table is at the very beginning or end of the
+document):
+
+```markdown
+Some text
+
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+
+> Blockquote
+```
+
+Note that text immediately following a table (i.e., not separated by an empty
+line) is treated as part of the table (per the specification) and will not
+trigger this rule:
+
+```markdown
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+This text is part of the table and the next line is blank
+
+Some text
+```
+
+Rationale: In addition to aesthetic reasons, some parsers will incorrectly parse
+tables that don't have blank lines before and after them.
 
 <!-- markdownlint-configure-file {
   "no-inline-html": {

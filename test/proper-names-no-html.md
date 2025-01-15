@@ -6,7 +6,7 @@ Bad text javascript. {MD044}
 
 Bad code `javascript`. {MD044}
 
-<img src="img/javascript/image.png">
+<img src="img/javascript/image.png" alt="Description">
 
 <script type="text/javascript">
 javascript {MD044}
@@ -20,10 +20,33 @@ javascript {MD044}
 
 <code>javascript</code> {MD044}
 
+<div>javascript</div> {MD044}
+
+<!-- javascript -->
+
+<!--
+javascript
+-->
+
+<a href="https://example.org">
+
+<div><a href="https://example.org"></div>
+
+<div>
+  <a href="https://example.org">
+</div>
+
+<div>
+  javascript {MD044}
+  <a href="https://example.org">
+  javascript {MD044}
+</div>
+
 <!-- markdownlint-configure-file {
-  "MD033": false,
-  "MD044": {
+  "no-inline-html": false,
+  "proper-names": {
     "names": [
+      "HTTPS",
       "JavaScript"
     ],
     "html_elements": false

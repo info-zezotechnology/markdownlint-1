@@ -9,8 +9,5 @@ categories: jekyll update
 Front matter from [Jekyll documentation](https://jekyllrb.com/docs/posts/#a-typical-post).
 
 <!-- markdownlint-configure-file {
-  "MD002": {
-    "level": 2
-  },
-  "MD013": false
+  "line-length": false
 } -->

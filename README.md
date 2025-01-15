@@ -13,22 +13,31 @@ npm install markdownlint --save-dev
 
 ## Overview
 
-The [Markdown](https://en.wikipedia.org/wiki/Markdown) markup language
-is designed to be easy to read, write, and understand. It succeeds -
-and its flexibility is both a benefit and a drawback. Many styles are
-possible, so formatting can be inconsistent. Some constructs don't
-work well in all parsers and should be avoided. The
-[CommonMark](https://commonmark.org/) specification standardizes
-parsers - but not authors.
+The [Markdown][markdown] markup language is designed to be easy to read, write,
+and understand. It succeeds - and its flexibility is both a benefit and a
+drawback. Many styles are possible, so formatting can be inconsistent; some
+constructs don't work well in all parsers and should be avoided.
 
-`markdownlint` is a
-[static analysis](https://en.wikipedia.org/wiki/Static_program_analysis)
-tool for [Node.js](https://nodejs.org/) with a library of rules
-to enforce standards and consistency for Markdown files. It was
-inspired by - and heavily influenced by - Mark Harrison's
-[markdownlint](https://github.com/markdownlint/markdownlint) for
-[Ruby](https://www.ruby-lang.org/). The initial rules, rule documentation,
-and test cases came directly from that project.
+`markdownlint` is a [static analysis][static-analysis] tool for
+[Node.js][nodejs] with a library of rules to enforce standards and consistency
+for Markdown files. It was inspired by - and heavily influenced by - Mark
+Harrison's [markdownlint][markdownlint-ruby] for Ruby. The initial rules, rule
+documentation, and test cases came from that project.
+
+`markdownlint` uses the [`micromark`][micromark] parser and honors the
+[CommonMark][commonmark] specification for Markdown. It additionally supports
+popular [GitHub Flavored Markdown (GFM)][gfm] syntax like autolinks and tables
+as well as directives, footnotes, and math syntax - all implemented by
+[`micromark` extensions][micromark-extensions].
+
+[commonmark]: https://commonmark.org/
+[gfm]: https://github.github.com/gfm/
+[markdown]: https://en.wikipedia.org/wiki/Markdown
+[markdownlint-ruby]: https://github.com/markdownlint/markdownlint
+[micromark]: https://github.com/micromark/micromark
+[micromark-extensions]: https://github.com/micromark/micromark?tab=readme-ov-file#list-of-extensions
+[nodejs]: https://nodejs.org/
+[static-analysis]: https://en.wikipedia.org/wiki/Static_program_analysis
 
 ### Related
 
@@ -66,9 +75,16 @@ and test cases came directly from that project.
 [markdownlint-problem-matcher]: https://github.com/xt0rted/markdownlint-problem-matcher
 [nodejs-extensions]: https://github.com/Lombiq/NodeJs-Extensions
 [rubygems-mdl]: https://rubygems.org/gems/mdl
-[sublimelinter]: https://packagecontrol.io/packages/SublimeLinter-contrib-markdownlint
-[super-linter]: https://github.com/github/super-linter
+[sublimelinter]: https://github.com/jonlabelle/SublimeLinter-contrib-markdownlint
+[super-linter]: https://github.com/super-linter/super-linter
 [vscode-markdownlint]: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
+
+### References
+
+The following specifications are considered authoritative in cases of ambiguity:
+
+- [CommonMark](https://spec.commonmark.org/current/)
+- [GitHub Flavored Markdown Spec](https://github.github.com/gfm/)
 
 ## Demonstration
 
@@ -79,12 +95,10 @@ playground for learning and exploring.
 
 <!-- markdownlint-disable line-length -->
 
-- **[MD001](doc/md001.md)** *heading-increment/header-increment* - Heading levels should only increment by one level at a time
-- ~~**[MD002](doc/md002.md)** *first-heading-h1/first-header-h1* - First heading should be a top-level heading~~
-- **[MD003](doc/md003.md)** *heading-style/header-style* - Heading style
+- **[MD001](doc/md001.md)** *heading-increment* - Heading levels should only increment by one level at a time
+- **[MD003](doc/md003.md)** *heading-style* - Heading style
 - **[MD004](doc/md004.md)** *ul-style* - Unordered list style
 - **[MD005](doc/md005.md)** *list-indent* - Inconsistent indentation for list items at the same level
-- ~~**[MD006](doc/md006.md)** *ul-start-left* - Consider starting bulleted lists at the beginning of the line~~
 - **[MD007](doc/md007.md)** *ul-indent* - Unordered list indentation
 - **[MD009](doc/md009.md)** *no-trailing-spaces* - Trailing spaces
 - **[MD010](doc/md010.md)** *no-hard-tabs* - Hard tabs
@@ -96,9 +110,9 @@ playground for learning and exploring.
 - **[MD019](doc/md019.md)** *no-multiple-space-atx* - Multiple spaces after hash on atx style heading
 - **[MD020](doc/md020.md)** *no-missing-space-closed-atx* - No space inside hashes on closed atx style heading
 - **[MD021](doc/md021.md)** *no-multiple-space-closed-atx* - Multiple spaces inside hashes on closed atx style heading
-- **[MD022](doc/md022.md)** *blanks-around-headings/blanks-around-headers* - Headings should be surrounded by blank lines
-- **[MD023](doc/md023.md)** *heading-start-left/header-start-left* - Headings must start at the beginning of the line
-- **[MD024](doc/md024.md)** *no-duplicate-heading/no-duplicate-header* - Multiple headings with the same content
+- **[MD022](doc/md022.md)** *blanks-around-headings* - Headings should be surrounded by blank lines
+- **[MD023](doc/md023.md)** *heading-start-left* - Headings must start at the beginning of the line
+- **[MD024](doc/md024.md)** *no-duplicate-heading* - Multiple headings with the same content
 - **[MD025](doc/md025.md)** *single-title/single-h1* - Multiple top-level headings in the same document
 - **[MD026](doc/md026.md)** *no-trailing-punctuation* - Trailing punctuation in heading
 - **[MD027](doc/md027.md)** *no-multiple-space-blockquote* - Multiple spaces after blockquote symbol
@@ -110,34 +124,32 @@ playground for learning and exploring.
 - **[MD033](doc/md033.md)** *no-inline-html* - Inline HTML
 - **[MD034](doc/md034.md)** *no-bare-urls* - Bare URL used
 - **[MD035](doc/md035.md)** *hr-style* - Horizontal rule style
-- **[MD036](doc/md036.md)** *no-emphasis-as-heading/no-emphasis-as-header* - Emphasis used instead of a heading
+- **[MD036](doc/md036.md)** *no-emphasis-as-heading* - Emphasis used instead of a heading
 - **[MD037](doc/md037.md)** *no-space-in-emphasis* - Spaces inside emphasis markers
 - **[MD038](doc/md038.md)** *no-space-in-code* - Spaces inside code span elements
 - **[MD039](doc/md039.md)** *no-space-in-links* - Spaces inside link text
 - **[MD040](doc/md040.md)** *fenced-code-language* - Fenced code blocks should have a language specified
 - **[MD041](doc/md041.md)** *first-line-heading/first-line-h1* - First line in a file should be a top-level heading
 - **[MD042](doc/md042.md)** *no-empty-links* - No empty links
-- **[MD043](doc/md043.md)** *required-headings/required-headers* - Required heading structure
+- **[MD043](doc/md043.md)** *required-headings* - Required heading structure
 - **[MD044](doc/md044.md)** *proper-names* - Proper names should have the correct capitalization
 - **[MD045](doc/md045.md)** *no-alt-text* - Images should have alternate text (alt text)
 - **[MD046](doc/md046.md)** *code-block-style* - Code block style
 - **[MD047](doc/md047.md)** *single-trailing-newline* - Files should end with a single newline character
 - **[MD048](doc/md048.md)** *code-fence-style* - Code fence style
-- **[MD049](doc/md049.md)** *emphasis-style* - Emphasis style should be consistent
-- **[MD050](doc/md050.md)** *strong-style* - Strong style should be consistent
+- **[MD049](doc/md049.md)** *emphasis-style* - Emphasis style
+- **[MD050](doc/md050.md)** *strong-style* - Strong style
 - **[MD051](doc/md051.md)** *link-fragments* - Link fragments should be valid
 - **[MD052](doc/md052.md)** *reference-links-images* - Reference links and images should use a label that is defined
 - **[MD053](doc/md053.md)** *link-image-reference-definitions* - Link and image reference definitions should be needed
+- **[MD054](doc/md054.md)** *link-image-style* - Link and image style
+- **[MD055](doc/md055.md)** *table-pipe-style* - Table pipe style
+- **[MD056](doc/md056.md)** *table-column-count* - Table column count
+- **[MD058](doc/md058.md)** *blanks-around-tables* - Tables should be surrounded by blank lines
 
 <!-- markdownlint-restore -->
 
 See [Rules.md](doc/Rules.md) for more details.
-
-~~Struck through~~ rules are deprecated and provided for backward-compatibility.
-
-> All rules with `heading` as part of their name are also available as `header`
-> aliases (e.g. `heading-increment` is also available as `header-increment`).
-> The use of `header` is deprecated and provided for backward-compatibility.
 
 ### Custom Rules
 
@@ -158,26 +170,25 @@ rules at once.
 - **`atx_closed`** - `MD020`, `MD021`
 - **`blank_lines`** - `MD012`, `MD022`, `MD031`, `MD032`, `MD047`
 - **`blockquote`** - `MD027`, `MD028`
-- **`bullet`** - `MD004`, `MD005`, `MD006`, `MD007`, `MD032`
+- **`bullet`** - `MD004`, `MD005`, `MD007`, `MD032`
 - **`code`** - `MD014`, `MD031`, `MD038`, `MD040`, `MD046`, `MD048`
 - **`emphasis`** - `MD036`, `MD037`, `MD049`, `MD050`
 - **`hard_tab`** - `MD010`
-- **`headers`** - `MD001`, `MD002`, `MD003`, `MD018`, `MD019`, `MD020`, `MD021`,
+- **`headings`** - `MD001`, `MD003`, `MD018`, `MD019`, `MD020`, `MD021`,
   `MD022`, `MD023`, `MD024`, `MD025`, `MD026`, `MD036`, `MD041`, `MD043`
-- **`headings`** - `MD001`, `MD002`, `MD003`, `MD018`, `MD019`, `MD020`,
-  `MD021`, `MD022`, `MD023`, `MD024`, `MD025`, `MD026`, `MD036`, `MD041`,
-  `MD043`
 - **`hr`** - `MD035`
 - **`html`** - `MD033`
-- **`images`** - `MD045`, `MD052`, `MD053`
-- **`indentation`** - `MD005`, `MD006`, `MD007`, `MD027`
+- **`images`** - `MD045`, `MD052`, `MD053`, `MD054`
+- **`indentation`** - `MD005`, `MD007`, `MD027`
 - **`language`** - `MD040`
 - **`line_length`** - `MD013`
-- **`links`** - `MD011`, `MD034`, `MD039`, `MD042`, `MD051`, `MD052`, `MD053`
+- **`links`** - `MD011`, `MD034`, `MD039`, `MD042`, `MD051`, `MD052`, `MD053`,
+  `MD054`
 - **`ol`** - `MD029`, `MD030`, `MD032`
 - **`spaces`** - `MD018`, `MD019`, `MD020`, `MD021`, `MD023`
 - **`spelling`** - `MD044`
-- **`ul`** - `MD004`, `MD005`, `MD006`, `MD007`, `MD030`, `MD032`
+- **`table`** - `MD055`, `MD056`, `MD058`
+- **`ul`** - `MD004`, `MD005`, `MD007`, `MD030`, `MD032`
 - **`url`** - `MD034`
 - **`whitespace`** - `MD009`, `MD010`, `MD012`, `MD027`, `MD028`, `MD030`,
   `MD037`, `MD038`, `MD039`
@@ -185,7 +196,7 @@ rules at once.
 ## Configuration
 
 Text passed to `markdownlint` is parsed as Markdown, analyzed, and any
-issues reported. Two kinds of text are ignored:
+issues reported. Two kinds of text are ignored by most rules:
 
 - [HTML comments](https://www.w3.org/TR/html5/syntax.html#comments)
 - [Front matter](https://jekyllrb.com/docs/frontmatter/) (see
@@ -301,42 +312,41 @@ alternate formats.
 
 ### Linting
 
-Standard asynchronous API:
+Asynchronous API via `import { lint } from "markdownlint/async"`:
 
 ```javascript
 /**
  * Lint specified Markdown files.
  *
- * @param {Options} options Configuration options.
+ * @param {Options | null} options Configuration options.
  * @param {LintCallback} callback Callback (err, result) function.
  * @returns {void}
  */
-function markdownlint(options, callback) { ... }
+function lint(options, callback) { ... }
 ```
 
-Synchronous API (for build scripts, etc.):
-
-```javascript
-/**
- * Lint specified Markdown files synchronously.
- *
- * @param {Options} options Configuration options.
- * @returns {LintResults} Results object.
- */
-function markdownlint.sync(options) { ... }
-```
-
-Promise API (in the `promises` namespace like Node.js's
-[`fs` Promises API](https://nodejs.org/api/fs.html#fs_fs_promises_api)):
+Synchronous API via `import { lint } from "markdownlint/sync"`:
 
 ```javascript
 /**
  * Lint specified Markdown files.
  *
- * @param {Options} options Configuration options.
+ * @param {Options | null} options Configuration options.
+ * @returns {LintResults} Results object.
+ */
+function lint(options) { ... }
+```
+
+Promise API via `import { lint } from "markdownlint/promise"`:
+
+```javascript
+/**
+ * Lint specified Markdown files.
+ *
+ * @param {Options | null} options Configuration options.
  * @returns {Promise<LintResults>} Results object.
  */
-function markdownlint(options) { ... }
+function lint(options) { ... }
 ```
 
 #### options
@@ -352,16 +362,16 @@ Type: `Object` mapping `String` to `Boolean | Object`
 
 Configures the rules to use.
 
-Object keys are rule names or aliases and values are the rule's configuration.
+Object keys are rule names/aliases; object values are the rule's configuration.
 The value `false` disables a rule, `true` enables its default configuration,
-and passing an object customizes its settings. Setting the special `default`
-rule to `true` or `false` includes/excludes all rules by default. Enabling
-or disabling a tag name (ex: `whitespace`) affects all rules having that
-tag.
+and passing an object value customizes that rule. Setting the special `default`
+rule to `true` or `false` includes/excludes all rules by default. In the absence
+of a configuration object, all rules are enabled. Enabling or disabling a tag
+name (ex: `whitespace`) affects all rules having that tag.
 
-The `default` rule is applied first, then keys are processed in order
-from top to bottom with later values overriding earlier ones. Keys
-(including rule names, aliases, tags, and `default`) are not case-sensitive.
+The `default` rule is applied first, then keys are processed in order from top
+to bottom with later values overriding earlier ones. Keys (including rule names,
+aliases, tags, and `default`) are not case-sensitive.
 
 Example:
 
@@ -404,6 +414,9 @@ See the [style](style) directory for more samples.
 See [markdownlint-config-schema.json](schema/markdownlint-config-schema.json)
 for the [JSON Schema](https://json-schema.org/) of the `options.config`
 object.
+
+See [ValidatingConfiguration.md](schema/ValidatingConfiguration.md) for ways to
+use the JSON Schema to validate configuration.
 
 For more advanced scenarios, styles can reference and extend other styles.
 The `readConfig` and `readConfigSync` functions can be used to read such
@@ -511,7 +524,7 @@ specify a custom `RegExp` or use the value `null` to disable the feature.
 The default value:
 
 ```javascript
-/((^---\s*$[\s\S]*?^---\s*)|(^\+\+\+\s*$[\s\S]*?^(\+\+\+|\.\.\.)\s*)|(^\{\s*$[\s\S]*?^\}\s*))(\r\n|\r|\n|$)/m
+/((^---[^\S\r\n\u2028\u2029]*$[\s\S]+?^---\s*)|(^\+\+\+[^\S\r\n\u2028\u2029]*$[\s\S]+?^(\+\+\+|\.\.\.)\s*)|(^\{[^\S\r\n\u2028\u2029]*$[\s\S]+?^\}\s*))(\r\n|\r|\n|$)/m
 ```
 
 Ignores [YAML](https://en.wikipedia.org/wiki/YAML),
@@ -533,7 +546,7 @@ Type: `Object` implementing the [file system API][node-fs-api]
 
 In advanced scenarios, it may be desirable to bypass the default file system
 API. If a custom file system implementation is provided, `markdownlint` will use
-that instead of invoking `require("fs")`.
+that instead of using `node:fs`.
 
 Note: The only methods called are `readFile` and `readFileSync`.
 
@@ -558,9 +571,9 @@ is allowed to continue and report any violations that were found.
 
 Type: `Array` of `Array` of `Function` and plugin parameters
 
-Specifies additional [markdown-it plugins][markdown-it-plugin] to use when
+Specifies additional [`markdown-it` plugins][markdown-it-plugin] to use when
 parsing input. Plugins can be used to support additional syntax and features for
-advanced scenarios.
+advanced scenarios. *Deprecated.*
 
 [markdown-it-plugin]: https://www.npmjs.com/search?q=keywords:markdown-it-plugin
 
@@ -569,6 +582,13 @@ Each item in the top-level `Array` should be of the form:
 ```javascript
 [ require("markdown-it-plugin"), plugin_param_0, plugin_param_1, ... ]
 ```
+
+> Note that `markdown-it` plugins are only called when the `markdown-it` parser
+> is invoked. None of the built-in rules use the `markdown-it` parser, so
+> `markdown-it` plugins will only be invoked when one or more
+> [custom rules][custom-rules] that use the `markdown-it` parser are present.
+
+[custom-rules]: #custom-rules
 
 ##### options.noInlineConfig
 
@@ -589,23 +609,20 @@ Specifies which version of the `result` object to return (see the "Usage"
 section below for examples).
 
 Passing a `resultVersion` of `0` corresponds to the original, simple format
-where each error is identified by rule name and line number. *This is
-deprecated.*
+where each error is identified by rule name and line number. *Deprecated*
 
 Passing a `resultVersion` of `1` corresponds to a detailed format where each
 error includes information about the line number, rule name, alias, description,
-as well as any additional detail or context that is available. *This is
-deprecated.*
+as well as any additional detail or context that is available. *Deprecated*
 
 Passing a `resultVersion` of `2` corresponds to a detailed format where each
 error includes information about the line number, rule names, description, as
-well as any additional detail or context that is available. *This is
-deprecated.*
+well as any additional detail or context that is available. *Deprecated*
 
 Passing a `resultVersion` of `3` corresponds to the detailed version `2` format
 with additional information about how to fix automatically-fixable errors. In
 this mode, all errors that occur on each line are reported (other versions
-report only the first error for each rule). *This is the default.*
+report only the first error for each rule). This is the default behavior.
 
 ##### options.strings
 
@@ -651,14 +668,14 @@ By default, configuration files are parsed as JSON (and named
 `.markdownlint.json`). Custom parsers can be provided to handle other formats
 like JSONC, YAML, and TOML.
 
-Asynchronous API:
+Asynchronous API via `import { readConfig } from "markdownlint/async"`:
 
 ```javascript
 /**
  * Read specified configuration file.
  *
  * @param {string} file Configuration file name.
- * @param {ConfigurationParser[] | ReadConfigCallback} parsers Parsing function.
+ * @param {ConfigurationParser[] | ReadConfigCallback} [parsers] Parsing function(s).
  * @param {Object} [fs] File system implementation.
  * @param {ReadConfigCallback} [callback] Callback (err, result) function.
  * @returns {void}
@@ -666,22 +683,21 @@ Asynchronous API:
 function readConfig(file, parsers, fs, callback) { ... }
 ```
 
-Synchronous API:
+Synchronous API via `import { readConfig } from "markdownlint/sync"`:
 
 ```javascript
 /**
- * Read specified configuration file synchronously.
+ * Read specified configuration file.
  *
  * @param {string} file Configuration file name.
  * @param {ConfigurationParser[]} [parsers] Parsing function(s).
  * @param {Object} [fs] File system implementation.
  * @returns {Configuration} Configuration object.
  */
-function readConfigSync(file, parsers, fs) { ... }
+function readConfig(file, parsers, fs) { ... }
 ```
 
-Promise API (in the `promises` namespace like Node.js's
-[`fs` Promises API](https://nodejs.org/api/fs.html#fs_promises_api)):
+Promise API via `import { readConfig } from "markdownlint/promise"`:
 
 ```javascript
 /**
@@ -733,7 +749,7 @@ Type: *Optional* `Object` implementing the [file system API][file-system-api]
 
 In advanced scenarios, it may be desirable to bypass the default file system
 API. If a custom file system implementation is provided, `markdownlint` will use
-that instead of invoking `require("fs")`.
+that instead of invoking `node:fs`.
 
 Note: The only methods called are `readFile`, `readFileSync`, `access`, and
 `accessSync`.
@@ -750,12 +766,75 @@ Type: `Object`
 
 Configuration object.
 
-## Usage
+### Fixing
 
-Invoke `markdownlint` and use the `result` object's `toString` method:
+Rules that can be fixed automatically include a `fixInfo` property which is
+outlined in the [documentation for custom rules](doc/CustomRules.md#authoring).
+To apply fixes consistently, the `applyFix`/`applyFixes` methods may be used via
+`import { applyFix, applyFixes } from "markdownlint"`:
 
 ```javascript
-const markdownlint = require("markdownlint");
+/**
+ * Applies the specified fix to a Markdown content line.
+ *
+ * @param {string} line Line of Markdown content.
+ * @param {RuleOnErrorFixInfo} fixInfo RuleOnErrorFixInfo instance.
+ * @param {string} [lineEnding] Line ending to use.
+ * @returns {string | null} Fixed content or null if deleted.
+ */
+function applyFix(line, fixInfo, lineEnding = "\n") { ... }
+
+/**
+ * Applies as many of the specified fixes as possible to Markdown content.
+ *
+ * @param {string} input Lines of Markdown content.
+ * @param {RuleOnErrorInfo[]} errors RuleOnErrorInfo instances.
+ * @returns {string} Fixed content.
+ */
+function applyFixes(input, errors) { ... }
+```
+
+Invoking `applyFixes` with the results of a call to lint can be done like so:
+
+```javascript
+import { applyFixes } from "markdownlint";
+import { lint as lintSync } from "markdownlint/sync";
+
+const results = lintSync({ "strings": { "content": original } });
+const fixed = applyFixes(original, results.content);
+```
+
+### Miscellaneous
+
+To get the [semantic version][semver] of the library, the `getVersion` method
+can be used:
+
+```javascript
+/**
+ * Gets the (semantic) version of the library.
+ *
+ * @returns {string} SemVer string.
+ */
+function getVersion() { ... }
+```
+
+Invoking `getVersion` is simple:
+
+```javascript
+import { getVersion } from "markdownlint";
+
+// Displays the library version
+console.log(getVersion());
+```
+
+[semver]: https://semver.org
+
+## Usage
+
+Invoke `lint` and use the `result` object's `toString` method:
+
+```javascript
+import { lint as lintAsync } from "markdownlint/async";
 
 const options = {
   "files": [ "good.md", "bad.md" ],
@@ -765,9 +844,9 @@ const options = {
   }
 };
 
-markdownlint(options, function callback(err, result) {
-  if (!err) {
-    console.log(result.toString());
+lintAsync(options, function callback(error, results) {
+  if (!error && results) {
+    console.log(results.toString());
   }
 });
 ```
@@ -785,21 +864,22 @@ bad.md: 3: MD018/no-missing-space-atx No space after hash on atx style heading [
 bad.md: 1: MD041/first-line-heading/first-line-h1 First line in a file should be a top-level heading [Context: "#bad.md"]
 ```
 
-Or invoke `markdownlint.sync` for a synchronous call:
+Or as a synchronous call:
 
 ```javascript
-const result = markdownlint.sync(options);
-console.log(result.toString());
+import { lint as lintSync } from "markdownlint/sync";
+
+const results = lintSync(options);
+console.log(results.toString());
 ```
 
-To examine the `result` object directly:
+To examine the `result` object directly via a `Promise`-based call:
 
 ```javascript
-markdownlint(options, function callback(err, result) {
-  if (!err) {
-    console.dir(result, { "colors": true, "depth": null });
-  }
-});
+import { lint as lintPromise } from "markdownlint/promise";
+
+const results = await lintPromise(options);
+console.dir(results, { "colors": true, "depth": null });
 ```
 
 Output:
@@ -841,88 +921,10 @@ Output:
 ```
 
 Integration with the [gulp](https://gulpjs.com/) build system is
-straightforward:
-
-```javascript
-const gulp = require("gulp");
-const through2 = require("through2");
-const markdownlint = require("markdownlint");
-
-gulp.task("markdownlint", function task() {
-  return gulp.src("*.md", { "read": false })
-    .pipe(through2.obj(function obj(file, enc, next) {
-      markdownlint(
-        { "files": [ file.relative ] },
-        function callback(err, result) {
-          const resultString = (result || "").toString();
-          if (resultString) {
-            console.log(resultString);
-          }
-          next(err, file);
-        });
-    }));
-});
-```
-
-Output:
-
-```text
-[00:00:00] Starting 'markdownlint'...
-bad.md: 3: MD010/no-hard-tabs Hard tabs [Column: 17]
-bad.md: 1: MD018/no-missing-space-atx No space after hash on atx style heading [Context: "#bad.md"]
-bad.md: 3: MD018/no-missing-space-atx No space after hash on atx style heading [Context: "#This file fails      some rules."]
-bad.md: 1: MD041/first-line-heading/first-line-h1 First line in a file should be a top-level heading [Context: "#bad.md"]
-[00:00:00] Finished 'markdownlint' after 10 ms
-```
+straightforward: [`gulpfile.cjs`](example/gulpfile.cjs).
 
 Integration with the [Grunt](https://gruntjs.com/) build system is similar:
-
-```javascript
-const markdownlint = require("markdownlint");
-
-module.exports = function wrapper(grunt) {
-  grunt.initConfig({
-    "markdownlint": {
-      "example": {
-        "src": [ "*.md" ]
-      }
-    }
-  });
-
-  grunt.registerMultiTask("markdownlint", function task() {
-    const done = this.async();
-    markdownlint(
-      { "files": this.filesSrc },
-      function callback(err, result) {
-        const resultString = err || ((result || "").toString());
-        if (resultString) {
-          grunt.fail.warn("\n" + resultString + "\n");
-        }
-        done(!err || !resultString);
-      });
-  });
-};
-```
-
-Output:
-
-```text
-Running "markdownlint:example" (markdownlint) task
-Warning:
-bad.md: 3: MD010/no-hard-tabs Hard tabs [Column: 17]
-bad.md: 1: MD018/no-missing-space-atx No space after hash on atx style heading [Context: "#bad.md"]
-bad.md: 3: MD018/no-missing-space-atx No space after hash on atx style heading [Context: "#This file fails      some rules."]
-bad.md: 1: MD041/first-line-heading/first-line-h1 First line in a file should be a top-level heading [Context: "#bad.md"]
- Use --force to continue.
-```
-
-### Fixing
-
-Rules that can be fixed automatically include a `fixInfo` property which is
-outlined in the [documentation for custom rules](doc/CustomRules.md#authoring).
-To apply those fixes more easily, the `applyFixes` method in
-[markdownlint-rule-helpers](helpers/README.md#applying-recommended-fixes) may
-be used.
+[`Gruntfile.cjs`](example/Gruntfile.cjs).
 
 ## Browser
 
@@ -934,10 +936,9 @@ Generate normal and minified scripts with:
 npm run build-demo
 ```
 
-Then reference `markdown-it` and `markdownlint`:
+Then reference the `markdownlint-browser` script:
 
 ```html
-<script src="demo/markdown-it.min.js"></script>
 <script src="demo/markdownlint-browser.min.js"></script>
 ```
 
@@ -949,7 +950,8 @@ const options = {
     "content": "Some Markdown to lint."
   }
 };
-const results = window.markdownlint.sync(options).toString();
+
+const results = globalThis.markdownlint.lintSync(options).toString();
 ```
 
 ## Examples
@@ -975,6 +977,11 @@ following projects or one of the tools in the [Related section](#related):
 - [webpack][webpack] ([Search repository][webpack-search])
 - [WordPress][wordpress] ([Search repository][wordpress-search])
 
+For more advanced integration scenarios:
+
+- [GitHub Docs content linter][content-linter]
+- [GitHub's `markdownlint-github` repository][markdownlint-github]
+
 [ally-js]: https://allyjs.io/
 [ally-js-search]: https://github.com/medialize/ally.js/search?q=markdownlint
 [airflow]: https://airflow.apache.org
@@ -983,6 +990,7 @@ following projects or one of the tools in the [Related section](#related):
 [boostnote-search]: https://github.com/BoostIO/Boostnote/search?q=markdownlint
 [codimd]: https://github.com/hackmdio/codimd
 [codimd-search]: https://github.com/hackmdio/codimd/search?q=markdownlint
+[content-linter]: https://docs.github.com/en/contributing/collaborating-on-github-docs/using-the-content-linter
 [dot-net-doc]: https://docs.microsoft.com/en-us/dotnet/
 [dot-net-doc-search]: https://github.com/dotnet/docs/search?q=markdownlint
 [electron]: https://www.electronjs.org
@@ -991,6 +999,7 @@ following projects or one of the tools in the [Related section](#related):
 [eslint-search]: https://github.com/eslint/eslint/search?q=markdownlint
 [garden]: https://zendeskgarden.github.io/react-components/
 [garden-search]: https://github.com/zendeskgarden/react-components/search?q=markdownlint
+[markdownlint-github]: https://github.com/github/markdownlint-github
 [mdn]: https://developer.mozilla.org/
 [mdn-search]: https://github.com/mdn/content/search?q=markdownlint
 [mkdocs]: https://www.mkdocs.org/

@@ -88,7 +88,7 @@ Text ``text <em> text`` text
 Text
 
 Text <a href="#anchor">inline {MD033}</a> text
-text <img src="src.png"/> text {MD033}
+text <img src="src.png" alt="Description" /> text {MD033}
 
 Text
 
@@ -125,11 +125,11 @@ Text
 Text <!-- <commented-out html="tag"> --> text.
 
 <!-- markdownlint-configure-file {
-  "MD010": false,
-  "MD033": {
+  "no-hard-tabs": false,
+  "no-inline-html": {
     "allowed_elements": [
       "strong"
     ]
   },
-  "MD046": false
+  "code-block-style": false
 } -->

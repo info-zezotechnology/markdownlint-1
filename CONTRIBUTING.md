@@ -17,6 +17,12 @@ Do not add new [`dependencies` to `package.json`][dependencies]. The Markdown
 parsers [`markdown-it`][markdown-it] and [`micromark`][micromark] are the
 project's only dependencies.
 
+Package versions for `dependencies` and `devDependencies` should be specified
+exactly (also known as "pinning"). The short explanation is that doing otherwise
+eventually leads to inconsistent behavior and broken functionality. (See [Why I
+pin dependency versions in Node.js packages][version-pinning] for a longer
+explanation.)
+
 If developing a new rule, start by creating a [custom rule][custom-rules] in its
 own project. Once written, published, and tested in real world scenarios, open
 an issue to consider adding it to this project. For rule ideas, see [issues
@@ -68,8 +74,8 @@ In order to maintain the permissive MIT license this project uses, all
 contributions must be your own and released under that license. Code you add
 should be an original work and should not be copied from elsewhere. Taking code
 from a different project, Stack Overflow, or the like is not allowed. The use of
-tools such as GitHub Copilot that generate code from other projects is not
-allowed.
+tools such as GitHub Copilot, ChatGPT, LLMs (large language models), etc. that
+incorporate code from other projects is not allowed.
 
 Thank you!
 
@@ -84,3 +90,4 @@ Thank you!
 [new-rule]: https://github.com/DavidAnson/markdownlint/labels/new%20rule
 [npm-scripts]: https://docs.npmjs.com/misc/scripts
 [rewriting-history]: https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
+[version-pinning]: https://dlaa.me/blog/post/versionpinning

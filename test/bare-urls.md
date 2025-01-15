@@ -59,6 +59,26 @@ https://example.com
 <pre>https://example.com</pre>
 </p>
 
+<div>
+https://example.com
+</div>
+
+<div>
+https://example.com
+
+</div>
+
+<div>
+
+https://example.com {MD034}
+</div>
+
+<div>
+
+https://example.com {MD034}
+
+</div>
+
 URLs in link and image text are not bare:
 
 Text [link to https://example.com site](https://example.com) text.
@@ -77,14 +97,15 @@ Email addresses are treated similarly: user@example.com {MD034}
 
 Angle brackets work the same for email: <user@example.com>
 
+Unusual email addresses are handled: <user@.com>
+
 ---
 
 [is-a-valid]: https://example.com
 
 Links bind to the innermost [link that [is-a-valid] link](https://example.com) {MD034}
 
-But not if the [link [is-not-a-valid] link](https://example.com) {MD034}
-HOWEVER this scenario could have an invalid shortcut and IS reported
+But not if the [link [is-not-a-valid] link](https://example.com)
 
-Escaping both inner square brackets avoids the unwanted report:
+Escaping both inner square brackets avoids confusion:
 [link \[is-not-a-valid\] link](https://example.com)
